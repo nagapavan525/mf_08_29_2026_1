@@ -10,9 +10,20 @@ from sklearn.metrics import classification_report
 # for model serialization
 import joblib
 import mlflow
+from pyngrok import ngrok
 
-mlflow.set_tracking_uri("http://localhost:5000")
-mlflow.set_experiment("mlops-training-experiment")
+
+public_url = ngrok.connect(5000).public_url
+print("MLflow UI is available at:", public_url)
+
+# Set the tracking URL for MLflow
+mlflow.set_tracking_uri(public_url)
+
+# Set the name for the experiment
+mlflow.set_experiment("MLOps_experiment")
+
+# mlflow.set_tracking_uri("http://localhost:5000")
+# mlflow.set_experiment("mlops-training-experiment")
 
 # Xtrain/Xtest/ytrain/ytest are downloaded from the previous job's artifact
 Xtrain = pd.read_csv("Xtrain.csv")
